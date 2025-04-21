@@ -83,7 +83,10 @@ async fn start_server_internal(
 
     #[cfg(target_os = "windows")] {
         use buttplug::server::device::hardware::communication::xinput::XInputDeviceCommunicationManagerBuilder;
-        device_manager_builder.comm_manager(XInputDeviceCommunicationManagerBuilder::default());
+        use buttplug::server::device::hardware::communication::hid::HidCommunicationManagerBuilder;
+        device_manager_builder
+            .comm_manager(XInputDeviceCommunicationManagerBuilder::default())
+            .comm_manager(HidCommunicationManagerBuilder::default());
     }
 
     let server = ButtplugServerBuilder::new(device_manager_builder.finish().expect("Failed to build device manager"))
