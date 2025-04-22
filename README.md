@@ -1,82 +1,82 @@
-# Buttplug Lite
+# KaniLite
 
-This application serves a websocket that runs a dramatically simplified version of the [Buttplug Sex Device Control Standard](https://buttplug-spec.docs.buttplug.io/) protocol. This allows commands to be sent to devices with significantly less programming, making integration feasible in more restricted environments where the buttplug.io protocol is difficult or impossible to implement.
+このアプリケーションは、[Buttplug Sex Device Control Standard](https://buttplug-spec.docs.buttplug.io/) プロトコルを大幅に簡略化したwebsocketを提供します。これにより、より少ないプログラミングでデバイスにコマンドを送ることができます。このため、buttplug.ioプロトコルが困難もしくは不可能な環境での統合が実現可能になります。
 
-## Installation and Usage
+## インストールと使用方法
 
-1. Download the [latest release](https://github.com/runtime-shady-backroom/buttplug-lite/releases/latest).
-2. Run buttplug-lite-windows.exe (or your operating system's appropriate binary if you aren't on Windows. Builds are also provided for macOS and Linux.)
-3. Add tags for the devices you plan to use.
-4. Press "apply configuration" to save your settings and apply them to the current server.
+1. 最新のリリースをダウンロードします。
+2. KaniLite.exe を実行します。
+3. 使用するデバイスのタグを追加します。
+4. "設定を適用"を押して、設定を保存して、現在のサーバーに適用します。
 
-## Features
+## 特徴
 
-- Extremely simple fire-and-forget protocol
-- Standalone application requiring no other software
+- 簡略化されたButtplug Sex Device Control Standard
+- 独立したアプリケーションで、他のソフトウェアを必要としません
 
-![screenshot of GUI](https://raw.githubusercontent.com/wiki/runtime-shady-backroom/buttplug-lite/images/buttplug-lite-2.0.0.png)
+![GUIのスクリーンショット](https://raw.githubusercontent.com/wiki/runtime-shady-backroom/buttplug-lite/images/buttplug-lite-2.0.0.png)
 
-## Supported Devices
+## 対応デバイス
 
-All [buttplug.io supported devices](https://iostindex.com/?filter0ButtplugSupport=4) should work. This includes everything from Lovense devices to Xbox controllers.
+[buttplug.io](https://iostindex.com/?filter0ButtplugSupport=4) がサポートするすべてのデバイスが使用可能です。これにはLovenseデバイスからXboxコントローラーまでを含みます。
 
-## Building from Source
+## ソースコードのビルド
 
-1. [Install Rust](https://www.rust-lang.org/tools/install)
-2. Clone the project
+1. [Rustのインストール](https://www.rust-lang.org/tools/install)
+2. プロジェクトをクローンします
 3. `cargo build --release`
 
-## Integrations
+## 運用
 
 ### Resonite
 
-A ProtoFlux reference implementation is available in this public folder:  
-`resrec:///U-Lehti/R-78C43B7CC794EE59412305C9A161E9883AA05BF82565325D8C28012018119E00` (paste that link in-game to spawn it).
+Resonite用のProtoFluxのリファレンス実装は、以下のパブリックフォルダーにあります:  
+`resrec:///U-Lehti/R-78C43B7CC794EE59412305C9A161E9883AA05BF82565325D8C28012018119E00` (ゲーム内でそのリンクを貼り付けて実体化してください)。
 
-Below is a screenshot of the reference implementation.
+以下は、リファレンス実装のスクリーンショットです。
 
 ![screenshot of reference implementation](https://raw.githubusercontent.com/wiki/runtime-shady-backroom/buttplug-lite/images/reference-implementation-resonite-1.0.jpg)
 
-This implementation is designed to go on an avatar. The top half of the ProtoFlux handles resetting the websocket connection when a new user enters the avatar, and can be omitted if the avatar will only ever be used by one user. The lower half of the ProtoFlux sends updates to the buttplug-lite server at around 7 Hz. If you go too far beyond 7 Hz you may start to run into latency issues. The two float inputs should be between zero and one (inclusive) and represent the desired motor intensity. You could source this from any number of places, such as Nearest User Hand, VirtualHapticPointSampler, or even a simple UI slider.
+この実装は、アバターに配置するように設計されています。ProtoFluxの上半分は、新しいユーザーがアバターに入るとウェブソケット接続をリセットするように設計されています。この部分は、アバターが常に一人のユーザーで使用される場合を除き、省略することができます。ProtoFluxの下半分は、約7Hzでbuttplug-liteサーバーに更新を送信します。7Hzを超えていくと、レイテンシーの問題を引き起こす可能性があります。2つの浮動入力は、0から1（含む）の範囲で、希望するモーターの強度を表します。これらは、最も近いユーザーの手、VirtualHapticPointSampler、または単純なUIスライダーからソースすることができます。
 
-## Manual
+## マニュアル
 
-### Sending Commands
+### コマンドの送信
 
-Send text-type messages to `ws://127.0.0.1:3031/haptic`. Binary-type messages are not currently supported. Commands should be sent at most at a 10hz rate. Beyond that application performance may begin to degrade.
+`ws://127.0.0.1:3031/haptic` にテキストタイプのメッセージを送信します。バイナリタイプのメッセージは現在サポートされていません。コマンドは最大10Hzで送信する必要があります。それ以上送信すると、アプリケーションのパフォーマンスが低下する可能性があります。
 
-#### Message Format
+#### メッセージフォーマット
 
-The message format is a list of semicolon (`;`) delimited motor commands. There are three possible types of command: Scalar, Linear, and Rotation. All commands start with a motor tag, which is a user-defined string representing a specific motor on a specific device.
+メッセージフォーマットは、セミコロン (`;`) で区切られたモーターコマンドのリストです。コマンドには3つの種類があります：スカラー、リニア、回転。すべてのコマンドは、特定のデバイス上の特定のモーターを表すユーザー定義の文字列であるモータータグから始まります。
 
 ##### Scalar
 
 `tag:strength`
 
-Strength controls motor intensity and ranges from `0.0` to `1.0`.
+強度はモーターの強さを制御し、`0.0`から`1.0`の範囲で指定します。
 
 ##### Linear
 
 `tag:duration:position`
 
-Position controls target position and ranges from `0.0` to `1.0`.  
-Duration controls time in milliseconds the device should take to move to the target position. Duration must be a positive integer.
+位置は目標位置を制御し、`0.0`から`1.0`の範囲で指定します。  
+持続時間はデバイスが目標位置に移動するまでの時間をミリ秒単位で制御します。持続時間は正の整数である必要があります。
 
 ##### Rotation
 
 `tag:speed`
 
-Speed controls the speed of rotation and ranges from `-1.0` to `1.0`. Positive numbers are clockwise, negative numbers are counterclockwise.
+速度は回転の速さを制御し、`-1.0`から`1.0`の範囲で指定します。正の数値は時計回り、負の数値は反時計回りを表します。
 
-##### Contraction (Deprecated)
+##### Contraction (非推奨)
 
 `tag:level`
 
-**Only supported in versions  0.5.3 to 1.1.0**. Starting in version 2, contraction is handled via a scalar command.
+**バージョン0.5.3から1.1.0までのみサポート**。バージョン2以降では、収縮はスカラーコマンドで処理されます。
 
-Contraction controls the pump strength on the Lovense Max. It must be an integer between `0` and `3`, inclusive.
+ContractionはLovense Maxのポンプ強度を制御します。`0`から`3`までの整数である必要があります。
 
-#### An Example Command
+#### コマンド例
 
 | Tag    | Type     | Strength | Duration | Position | Speed | Contraction |
 |--------|----------|---------:|---------:|---------:|------:|------------:|
@@ -93,28 +93,28 @@ Contraction controls the pump strength on the Lovense Max. It must be an integer
 foo:0;bar:0.3;baz:1;gort:20:0.25;klaatu:400:0.75;barada:-0.75;nikto:0.26
 ```
 
-Note that you are not required to specify all the tagged motors if you don't want to. The following is also valid, but will of course only drive the `foo` motor.
+すべてのタグ付きモーターを指定する必要はありません。以下の例も有効ですが、もちろん`foo`モーターのみを制御します。
 ```
 foo:0.1
 ```
 
 #### Motor State
 
-Motors will continue running at the vibration and rotation speeds last commanded until another update is received.
+モーターは、次の更新が受信されるまで、最後に指示された振動や回転の速度で動作し続けます。
 
-If no command is received for 10 seconds, buttplug-lite will send a stop command to all connected devices. To avoid this, send commands periodically even if your desired motor state has not changed.
+10秒間コマンドが受信されない場合、buttplug-liteは接続されているすべてのデバイスに停止コマンドを送信します。これを避けるには、希望するモーターの状態が変わらなくても、定期的にコマンドを送信してください。
 
-### Checking the Application Version
+### アプリケーションバージョンの確認
 
-Send an HTTP GET to `http://127.0.0.1:3031/`. A 200 OK will be returned with body containing the application name and version. Example response:
+`http://127.0.0.1:3031/` にHTTP GETリクエストを送信します。200 OKが返され、ボディにはアプリケーション名とバージョンが含まれます。応答例：
 ```
 buttplug-lite 0.7.0
 ```
-Prior to version 0.7.0 this endpoint is a 404.
+バージョン0.7.0以前では、このエンドポイントは404を返します。
 
-### Checking the Configuration
+### 設定の確認
 
-Send an HTTP GET to `http://127.0.0.1:3031/deviceconfig`. A 200 OK will be returned with body containing a machine-readable list of configured motors. Example response:
+`http://127.0.0.1:3031/deviceconfig` にHTTP GETリクエストを送信します。200 OKが返され、ボディには機械可読形式の設定済みモーターリストが含まれます。応答例：
 ```
 o;Lovense Edge;scalar
 c;Lovense Max;scalar
@@ -122,17 +122,17 @@ i;Lovense Edge;scalar
 m;Lovense Max;scalar
 ```
 
-The response is a newline (LF) delimited list of motor configurations. There is a trailing newline. Each motor configuration line is a semicolon (`;`) delimited list of tag, device name, and motor type. In the case where there are no configured motors the response body will be an empty string.
+応答は改行（LF）で区切られたモーター設定のリストです。末尾にも改行があります。各モーター設定行は、セミコロン（`;`）で区切られたタグ、デバイス名、モータータイプのリストです。設定されたモーターがない場合、応答本文は空の文字列になります。
 
-Possible motors types are: `linear`, `rotation`, and `scalar`.
+利用可能なモータータイプは次のとおりです：`linear`、`rotation`、および`scalar`。
 
-Prior to version 0.7.0 this endpoint is a 404.
+バージョン0.7.0以前では、このエンドポイントは404を返します。
 
-### Checking the Status
+### ステータスの確認
 
-Send an HTTP GET to `http://127.0.0.1:3031/hapticstatus`. A 200 OK will be returned with body containing a plain text summary of the connection status and connected devices. **This response is intended for debugging and is not intended to be parsed.** The response structure is subject to change. If you have a use case that requires parsing device status let me know by opening an issue.
+`http://127.0.0.1:3031/hapticstatus` にHTTP GETリクエストを送信します。200 OKが返され、ボディには接続ステータスと接続されたデバイスのプレーンテキストの概要が含まれます。**この応答はデバッグ用であり、解析することを意図していません。**応答の構造は変更される可能性があります。デバイスステータスの解析が必要なユースケースがある場合は、課題を作成してお知らせください。
 
-Example response:
+応答例：
 ```
 device server running=true
   Lovense Edge
@@ -183,12 +183,14 @@ Here is where buttplug lite stores its various files on your filesystem:
 
 Note that once a maximum of 50 log files are reached, old logs will be rotated out.
 
-## Feedback
+## フィードバック
 
-If you have bugs to report or ideas to suggest please let me know by opening an [issue](https://github.com/runtime-shady-backroom/buttplug-lite/issues) or starting a [discussion](https://github.com/runtime-shady-backroom/buttplug-lite/discussions).
+If you have bugs to report or ideas to suggest please let me know by opening an [issue](https://github.com/herbst17904634/KaniLite/issues) or starting a [discussion](https://github.com/herbst17904634/KaniLite/discussions).
 
-## License
+## ライセンス
 
-Copyright 2022-2023 [runtime-shady-backroom](https://github.com/runtime-shady-backroom) and [buttplug-lite contributors](https://github.com/runtime-shady-backroom/buttplug-lite/graphs/contributors).
+KaniLite は Buttplug Liteのフォーク版です。
+KaniLite は [AGPL-3.0 license](LICENSE) で提供されます。
+Coopyright of Buttplug Lite 2022-2023 [runtime-shady-backroom](https://github.com/runtime-shady-backroom) and [buttplug-lite contributors](https://github.com/runtime-shady-backroom/buttplug-lite/graphs/contributors).
 
-Buttplug Lite is provided under the [AGPL-3.0 license](LICENSE).
+

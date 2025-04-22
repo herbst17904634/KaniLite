@@ -1,12 +1,12 @@
 [package]
-name = "buttplug-lite"
-version = "2.5.4"
-authors = ["Runtime's Shady Backroom <76618880+runtime-shady-backroom@users.noreply.github.com>"]
-description = "Makes vibrators go brr"
+name = "KaniLite"
+version = "0.1.0" # Forked from buttplug-lite version 2.5.4
+authors = ["Runtime's Shady Backroom <76618880+runtime-shady-backroom@users.noreply.github.com>", "KaniLite contributor Herbst17904634 <herbst17904634@gmail.com>"]
+description = "Let's get the vibes up!"
 edition = "2021"
 license = "AGPL-3.0-only"
 readme = "README.md"
-repository = "https://github.com/runtime-shady-backroom/buttplug-lite"
+repository = "https://github.com/herbst17904634/KaniLite"
 keywords = ["vibrator", "buttplug", "control", "bluetooth", "websocket"]
 categories = ["hardware-support", "web-programming::http-server", "web-programming::websocket"]
 

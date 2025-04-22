@@ -13,7 +13,7 @@ use serde::Deserialize;
 use tracing::{info, warn};
 
 const USER_AGENT: &str = "runtime-shady-backroom/buttplug-lite";
-const UPDATE_CHECK_URI: &str = "https://api.github.com/repos/runtime-shady-backroom/buttplug-lite/releases/latest";
+const UPDATE_CHECK_URI: &str = "https://api.github.com/repos/herbst17904634/KaniLite/releases/latest";
 
 /// Compare the local version to the latest GitHub release. If there's a newer version available, return its URL.
 pub async fn check_for_update(local_version: Version) -> Option<String> {

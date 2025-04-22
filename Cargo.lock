@@ -3,6 +3,34 @@
 version = 4
 
 [[package]]
+name = "KaniLite"
+version = "0.1.0"
+dependencies = [
+ "backtrace",
+ "buttplug",
+ "chrono",
+ "clap",
+ "directories",
+ "futures",
+ "iced",
+ "iced_futures",
+ "itertools 0.14.0",
+ "lazy_static",
+ "open",
+ "reqwest",
+ "semver",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tokio-stream",
+ "toml",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+ "warp",
+]
+
+[[package]]
 name = "ab_glyph"
 version = "0.2.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -647,34 +675,6 @@ dependencies = [
  "wasm-bindgen-futures",
  "wasmtimer",
  "windows 0.57.0",
-]
-
-[[package]]
-name = "buttplug-lite"
-version = "2.5.4"
-dependencies = [
- "backtrace",
- "buttplug",
- "chrono",
- "clap",
- "directories",
- "futures",
- "iced",
- "iced_futures",
- "itertools 0.14.0",
- "lazy_static",
- "open",
- "reqwest",
- "semver",
- "serde",
- "serde_json",
- "tokio",
- "tokio-stream",
- "toml",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
- "warp",
 ]
 
 [[package]]
