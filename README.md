@@ -147,8 +147,13 @@ device server running=true
     LinearCmd: ClientGenericDeviceMessageAttributes { feature_descriptor: "No description available for feature", _actuator_type: Position, step_count: 100 }
 ```
 
-### Checking Battery
-Send an HTTP GET to `http://127.0.0.1:3031/batterystatus`. A 200 OK will be returned with body containing a plain text list of devices and battery levels. Devices are delimited by newlines, battery levels are delimited by `:`. If the device has an unknown battery level a `-1` will be returned. Example:
+### バッテリーの確認  
+`http://127.0.0.1:3031/batterystatus` に HTTP GET を送信します。  
+200 OK が返され、本文にはデバイス名とバッテリー残量のプレーンテキストリストが含まれます。  
+- デバイスは改行で区切られる  
+- バッテリー残量は `:` で区切られる  
+
+バッテリー残量が不明な場合は `-1` が返されます。例:  
 ```
 Lovense Edge:1
 Lovense Max:0.45
@@ -156,36 +161,56 @@ Lovense Max:0.45
 
 ## Command-Line Arguments
 
-buttplug-lite is intended to be used as a GUI, but for debugging purposes a few command-line arguments are included.
+KaniLite は GUI として使用することを想定していますが、デバッグ目的でいくつかのコマンドライン引数も用意されています。
 
 ```
-Usage: buttplug-lite [OPTIONS]
+Usage: KaniLite [OPTIONS]
 
 Options:
-  -v, --verbose...               Sets the level of verbosity. Repeating this argument up to four times will apply increasingly verbose log_filter presets
-  -c, --stdout                   Log to stdout instead of the default log file
-  -f, --log-filter <LOG_FILTER>  Custom logging filter: https://docs.rs/tracing-subscriber/0.3.16/tracing_subscriber/filter/struct.EnvFilter.html. This completely overrides the `--verbose` setting
-      --debug-ticks <SECONDS>    Emit periodic ApplicationStatusEvent ticks every <SECONDS> seconds. These "ticks" force the UI to update device state, which for example can be used to poll device battery levels
-      --no-panic-handler         Disables the custom panic handler in the log file. Has no effect if used with `--stdout`
-      --force-panic-handler      Enables the custom panic handler in stdout logs. Has no effect if file logging is used. Note that file logging is the default without an explicit `--stdout`
-  -h, --help                     Print help
-  -V, --version                  Print version
+- `-v, --verbose...`  
+  冗長度のレベルを設定します。引数を最大4回繰り返すことで、より詳細な `log_filter` プリセットが段階的に適用されます
+
+- `-c, --stdout`  
+  デフォルトのログファイルではなく標準出力 (stdout) にログを出力します
+- `-f, --log-filter <LOG_FILTER>`  
+  カスタムログフィルタ：  
+  `https://docs.rs/tracing-subscriber/0.3.16/tracing_subscriber/filter/struct.EnvFilter.html`  
+  `--verbose` の設定を完全に上書きします
+
+- `--debug-ticks <SECONDS>`  
+  `<SECONDS>` 秒ごとに `ApplicationStatusEvent` のティックを発行します。  
+  このティックは UI にデバイス状態の強制更新を行わせ、例えばバッテリー残量のポーリングなどに利用できます
+
+- `--no-panic-handler`  
+  ログファイルでのカスタムパニックハンドラを無効化します。  
+  `--stdout` と併用した場合は効果がありません
+
+- `--force-panic-handler`  
+  stdout ログでカスタムパニックハンドラを有効化します。  
+  ファイルロギング時には効果がありません。  
+  ※明示的に `--stdout` を指定しない限り、デフォルトでファイルロギングが使用されます
+
+- `-h, --help`  
+  ヘルプを表示します
+
+- `-V, --version`  
+  バージョン情報を表示します
 ```
 
-## Files
+## ファイル
 
-Here is where buttplug lite stores its various files on your filesystem:
+KaniLite がファイルシステム上に各種ファイルを保存する場所は以下のとおりです：
 
 |                             | Windows                                                    | macOS                                                                                   | *nix                                                                           |
 |-----------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
 | **Configuration Directory** | `%APPDATA%\runtime-shady-backroom\buttplug-lite\config`    | `$HOME/Library/Application Support/io.github.runtime-shady-backroom.buttplug-lite`      | `$XDG_CONFIG_HOME/buttplug-lite` or `$HOME/.config/buttplug-lite`              |
 | **Log Directory**           | `%APPDATA%\runtime-shady-backroom\buttplug-lite\data\logs` | `$HOME/Library/Application Support/io.github.runtime-shady-backroom.buttplug-lite/logs` | `$XDG_DATA_HOME/buttplug-lite/logs` or `$HOME/.local/share/buttplug-lite/logs` |
 
-Note that once a maximum of 50 log files are reached, old logs will be rotated out.
+ログファイルが最大50件に達すると、古いログはローテーションされます。
 
 ## フィードバック
 
-If you have bugs to report or ideas to suggest please let me know by opening an [issue](https://github.com/herbst17904634/KaniLite/issues) or starting a [discussion](https://github.com/herbst17904634/KaniLite/discussions).
+バグ報告やアイデアの提案がありましたら、[issue](https://github.com/herbst17904634/KaniLite/issues) を作成するか、[discussion](https://github.com/herbst17904634/KaniLite/discussions) を開始してください。
 
 ## ライセンス
 
